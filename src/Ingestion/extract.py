@@ -26,7 +26,7 @@ def api_extraction():
     end_date = today_date.strftime("%Y-%m-%d")
 
     # ---------------------------------------------------
-    # WEATHER API
+    # GEOCODING MAPPING API
     # ---------------------------------------------------
     geocoding_url = (
         "https://psgc.cloud/api/cities"
@@ -74,7 +74,7 @@ def api_extraction():
 
     try:
 
-        # GEOCODING REQUEST
+        # GEOCODING MAPPING REQUEST
         logger.info("Starting Geocoding API Request...")
 
         geocoding_response =  requests.get(geocoding_url, timeout=20)
@@ -140,7 +140,7 @@ def api_extraction():
 
 
         return {
-            "GeoCoding": geocoding,
+            "geocoding": geocoding,
             "adzuna": adzuna,
             "arbeitnow": arbeitnow,
             "remotive": remotive
