@@ -1,5 +1,5 @@
-
-from src.Ingestion.extract import api_extraction
+# Pipeline
+from src.ingestion.extract import api_extraction
 
 from src.common.logger import get_logger
 
@@ -14,7 +14,6 @@ def main():
     print(data)
 
 
-
-
+    
 if __name__ == "__main__":
     main()
