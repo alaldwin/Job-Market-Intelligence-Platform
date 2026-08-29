@@ -1,12 +1,17 @@
 
-from src.common.logger import get_logger
 from src.Ingestion.extract import api_extraction
 
-logger = get_logger(__name__, "Main.log")
+from src.common.logger import get_logger
+
+logger = get_logger(__name__, "main.log")
 
 def main():
 
+    logger.info("Pipeline Started...")
+
+    # extraction
     data = api_extraction()
+    print(data)
 
 
 
