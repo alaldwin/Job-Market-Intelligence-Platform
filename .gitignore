@@ -19,3 +19,29 @@ env/
 # Python cache
 __pycache__/
 *.py[cod]
+
+
+# Logs
+*.log
+logs/
+
+
+# Data files
+data/
+*.csv
+*.json
+*.parquet
+
+
+# Jupyter
+.ipynb_checkpoints/
+
+
+# IDE
+.vscode/
+.idea/
+
+
+# OS
+.DS_Store
+Thumbs.db
