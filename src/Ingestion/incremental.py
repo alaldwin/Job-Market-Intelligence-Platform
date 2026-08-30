@@ -9,24 +9,20 @@ def get_incremental_dates(source):
 
     last_date = get_last_date(source)
 
-    # First ingestion
     if last_date is None:
-
+        # First ingestion
         start_date = today - timedelta(days=15)
 
-    # Incremental ingestion
     else:
-
-        last_ingestion_date = datetime.strptime(
+        # Incremental ingestion
+        last_date = datetime.strptime(
             last_date,
             "%Y-%m-%d"
         ).date()
 
-        start_date = last_ingestion_date + timedelta(days=1)
+        start_date = last_date + timedelta(days=1)
 
-    # Nothing new
     if start_date > today:
-
         return None, None
 
     return (

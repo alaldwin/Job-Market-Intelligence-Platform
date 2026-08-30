@@ -2,48 +2,44 @@ import json
 import os
 import requests
 
-from datetime import datetime, timedelta
-
-from src.ingestion.state_manager import get_last_date
-
 from dotenv import load_dotenv
 
 from src.common.logger import get_logger
+from src.ingestion.incremental import get_incremental_dates
+from src.ingestion.state_manager import update_last_date
+from src.ingestion.save_json import save_json
+
+
 
 load_dotenv()
+
+logger = get_logger(
+    __name__, 
+    "extraction.log"
+    )
+
 
 ADZUNA_APP_ID = os.getenv("ADZUNA_APP_ID")
 ADZUNA_APP_KEY = os.getenv("ADZUNA_APP_KEY")
 
-logger = get_logger(__name__, "extraction.log")
-
 
 def api_extraction():
 
-    today = datetime.now().date()
+    start_date, end_date = get_incremental_dates(
+        "adzuna"
+    )
 
-    last_date = get_last_date(source)
+    if start_date is None:
 
-    # First ingestion
-    if last_date is None:
+        logger.info(
+            "No new data to ingest."
+        )
 
-        start_date = today - timedelta(days=15)
+        return None
 
-    # Incremental ingestion
-    else:
-
-        last_ingestion_date = datetime.strptime(
-            last_date,
-            "%Y-%m-%d"
-        ).date()
-
-        start_date = last_ingestion_date + timedelta(days=1)
-
-    end_date = today
-
-    return (
-        start_date.strftime("%Y-%m-%d"),
-        end_date.strftime("%Y-%m-%d")
+    logger.info(
+        f"Incremental ingestion: "
+        f"{start_date} → {end_date}"
     )
 
     # ---------------------------------------------------
@@ -93,6 +89,8 @@ def api_extraction():
     )
 
 
+
+    # REQUESTS
     try:
 
         # GEOCODING MAPPING REQUEST
@@ -107,6 +105,7 @@ def api_extraction():
         logger.info(
             f" Weather Request Successful: {geocoding_response.status_code}"
         )
+
 
 
         # JOB ADZUNA REQUEST
@@ -128,6 +127,8 @@ def api_extraction():
         )
 
 
+
+
         # JOB ARBEITNOW REQUEST
         logger.info("Starting Arbeitnow API Request...")
 
@@ -143,6 +144,9 @@ def api_extraction():
         logger.info(
             f"Arbeitnow Request Successful: {arbeitnow_response.status_code}"
         )
+
+
+
 
         # JOB REMOTIVE REQUEST
         logger.info("Starting Remotive API Request...")
@@ -160,12 +164,47 @@ def api_extraction():
         logger.info(f"Remotive Request Successful: {remotive_response.status_code}")
 
 
-        return {
+
+
+        data = {
             "geocoding": geocoding,
             "adzuna": adzuna,
             "arbeitnow": arbeitnow,
             "remotive": remotive
         }
+
+
+        save_json(
+            geocoding,
+            "geocoding",
+            end_date
+        )
+
+        save_json(
+            adzuna,
+            "adzuna",
+            end_date
+        )
+
+        save_json(
+            arbeitnow,
+            "arbeitnow",
+            end_date
+        )
+
+        save_json(
+            remotive,
+            "remotive",
+            end_date
+        )
+
+        # update State
+        update_last_date(
+            "adzuna",
+            end_date
+        )
+
+        return data
 
 
 
