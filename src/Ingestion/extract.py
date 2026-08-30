@@ -4,6 +4,8 @@ import requests
 
 from datetime import datetime, timedelta
 
+from src.ingestion.state_manager import get_last_date
+
 from dotenv import load_dotenv
 
 from src.common.logger import get_logger
@@ -18,12 +20,31 @@ logger = get_logger(__name__, "extraction.log")
 
 def api_extraction():
 
-    today_date = datetime.now()
+    today = datetime.now().date()
 
-    date_10_days_ago = today_date - timedelta(days=15)
+    last_date = get_last_date(source)
 
-    start_date = date_10_days_ago.strftime('%Y-%m-%d')
-    end_date = today_date.strftime("%Y-%m-%d")
+    # First ingestion
+    if last_date is None:
+
+        start_date = today - timedelta(days=15)
+
+    # Incremental ingestion
+    else:
+
+        last_ingestion_date = datetime.strptime(
+            last_date,
+            "%Y-%m-%d"
+        ).date()
+
+        start_date = last_ingestion_date + timedelta(days=1)
+
+    end_date = today
+
+    return (
+        start_date.strftime("%Y-%m-%d"),
+        end_date.strftime("%Y-%m-%d")
+    )
 
     # ---------------------------------------------------
     # GEOCODING MAPPING API
