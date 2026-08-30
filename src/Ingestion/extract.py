@@ -5,6 +5,7 @@ import requests
 from dotenv import load_dotenv
 
 from src.common.logger import get_logger
+
 from src.ingestion.incremental import get_incremental_dates
 from src.ingestion.state_manager import update_last_date
 from src.ingestion.save_json import save_json
