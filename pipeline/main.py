@@ -31,8 +31,7 @@ def main():
     )
 
         for source, source_data in data.items():
-
-            logger.info(f"Validating {source}...")
+            
 
             validate_data(source, source_data)
 

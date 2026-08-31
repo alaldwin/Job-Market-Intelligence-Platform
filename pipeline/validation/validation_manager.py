@@ -1,16 +1,16 @@
-from src.validation.adzuna_validator import (
+from pipeline.validation.adzuna_validator import (
     AdzunaValidator
 )
 
-from src.validation.arbeitnow_validator import (
+from pipeline.validation.arbeitnow_validator import (
     ArbeitnowValidator
 )
 
-from src.validation.remotive_validator import (
+from pipeline.validation.remotive_validator import (
     RemotiveValidator
 )
 
-from src.validation.geocoding_validator import (
+from pipeline.validation.geocoding_validator import (
     GeocodingValidator
 )
 

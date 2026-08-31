@@ -1,6 +1,6 @@
 import json
 
-from src.ingestion.state_manager import (
+from pipeline.ingestion.state_manager import (
     save_state,
     get_last_date
 )

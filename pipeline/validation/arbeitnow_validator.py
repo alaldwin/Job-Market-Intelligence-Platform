@@ -1,4 +1,4 @@
-from src.validation.base_validator import BaseValidator
+from pipeline.validation.base_validator import BaseValidator
 
 
 class ArbeitnowValidator(BaseValidator):

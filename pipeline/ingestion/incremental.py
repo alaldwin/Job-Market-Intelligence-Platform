@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 
-from src.ingestion.state_manager import get_last_date
+from pipeline.ingestion.state_manager import get_last_date
 
 
 def get_incremental_dates(source):

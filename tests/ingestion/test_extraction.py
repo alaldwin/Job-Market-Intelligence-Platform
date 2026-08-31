@@ -2,7 +2,7 @@ import pytest
 import requests
 
 from unittest.mock import Mock, patch
-from src.ingestion.extract import api_extraction
+from pipeline.ingestion.extract import api_extraction
 
 class TestExtraction:
 
