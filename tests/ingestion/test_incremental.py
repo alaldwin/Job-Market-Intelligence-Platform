@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 
-from src.ingestion.incremental import get_incremental_dates
+from pipeline.ingestion.incremental import get_incremental_dates
 
 
 def test_first_ingestion(monkeypatch):
